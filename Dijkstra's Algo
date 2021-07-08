@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+int main()
+{
+	int n,m,i;
+	cin>>n>>m;
+	int from,to,wt,src;
+	vector<pair<int,int> > vt[n+1];
+	for(i=0;i<m;i++)
+    {
+        cin>>from>>to>>wt;
+        vt[from].push_back(make_pair(to,wt));
+    }
+
+    cin>>src;
+
+    int prev,next,dis,nxtdis;
+    priority_queue<pair<int,int>,vector<pair<int,int> >,greater<pair<int,int> > > pq;
+    vector<int>dist(n+1,INT_MAX);
+    dist[src] = 0;
+    pq.push(make_pair(0,src));
+    while(!pq.empty())
+    {
+        dis = pq.top().first;
+        prev = pq.top().second;
+        pq.pop();
+        vector<pair<int,int> > :: iterator it;
+        for(it = vt[prev].begin(); it != vt[prev].end();it++)
+        {
+            next = it->first;
+            nxtdis = it->second;
+            if(dist[next] > dist[prev] + nxtdis)
+            {
+                dist[next] = dist[prev] + nxtdis;
+                pq.push(make_pair(dist[next],next));
+            }
+        }
+    }
+
+    for(i=1;i<=n;i++)
+        cout<<dist[i]<<" ";
+    cout<<endl;
+}
