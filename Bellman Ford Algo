@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define INF 99999
+
+int main()
+{
+	int n,m,i;
+	cin>>n>>m;
+	int from,to,wt,src;
+	int k,j;
+	vector<pair<pair<int,int>,int> > vt(m);
+
+	for(i=0;i<m;i++)
+    {
+        cin>>from>>to>>wt;
+        vt[i] = {{from,to},wt};
+    }
+
+    int d[n+1],p[n+1],u,v;
+    for(i=1;i<=n;i++)
+    {
+        d[i] = INF;
+        p[i] = INF;
+    }
+
+    cin>>src;
+    d[src] = 0;
+
+    for(k = 1;k < n;k++)
+    {
+        for(i = 0;i < m;i++)
+        {
+            u = vt[i].first.first;
+            v = vt[i].first.second;
+            wt = vt[i].second;
+            if(d[u] + wt < d[v])
+                {
+                    d[v] = wt + d[u];
+                    p[v] = u;
+                }
+        }
+    }
+
+    //Printing shortest distances from source vertex
+        for(j=1;j<=n;j++)
+           cout<<d[j]<<" ";
+        cout<<endl;
+
+    //Detecting negative edge cycle
+    int fl = 0;
+    for(i = 0;i < m;i++)
+        {
+            u = vt[i].first.first;
+            v = vt[i].first.second;
+            wt = vt[i].second;
+            if(d[u] + wt < d[v])
+            {
+
+                fl = 1;
+                break;
+            }
+        }
+
+    if(fl)
+        cout<<"Negative weight cycle is present"<<endl;
+    else
+        cout<<"Not present."<<endl;
+
+}
